@@ -9,15 +9,14 @@ import { Box, Typography, Divider, useTheme, InputBase } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
+import TwiiterWidget from "./TwiiterWidget";
+import LinkedInWidget from "./LinkedInWidget";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
-  const [editTwitter, setEditTwitter] = useState(false);
-  const [editLinkedIn, setEditLinkedIn] = useState(false);
-  const [link, setLink] = useState("");
   const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
@@ -43,6 +42,7 @@ const UserWidget = ({ userId, picturePath }) => {
   }
 
   const {
+    _id,
     firstName,
     lastName,
     location,
@@ -50,22 +50,9 @@ const UserWidget = ({ userId, picturePath }) => {
     viewedProfile,
     impressions,
     friends,
+    twitterLink,
+    linkedInLink,
   } = user;
-
-  const isTwitterLinkValid = (link) => {
-    // Regular expression to match Twitter profile URLs
-    const twitterRegex =
-      /^(https?:\/\/)?(www\.)?twitter\.com\/([a-zA-Z0-9_]+)$/;
-
-    return twitterRegex.test(link);
-  };
-  const isValid = isTwitterLinkValid(link);
-
-  const submitLink = () => {
-    if (isValid || link === "") {
-      setEditTwitter(!editTwitter);
-    }
-  };
 
   return (
     <WidgetWrapper>
@@ -103,11 +90,17 @@ const UserWidget = ({ userId, picturePath }) => {
       <Box p="1rem 0">
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
           <LocationOnOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{location}</Typography>
+          <Typography color={medium}>
+            {location.length > 50
+              ? `${location.substring(0, 50)}...`
+              : location}
+          </Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="1rem">
           <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{occupation}</Typography>
+          <Typography color={medium}>{occupation.length > 50
+              ? `${occupation.substring(0, 50)}...`
+              : occupation}</Typography>
         </Box>
       </Box>
 
@@ -137,90 +130,9 @@ const UserWidget = ({ userId, picturePath }) => {
           Social Profiles
         </Typography>
 
-        {editTwitter && (
-          <Box m="1rem 0" p=".5rem">
-            <FlexBetween gap="1rem">
-              <InputBase
-                placeholder="Paste your Twitter link.."
-                onChange={(e) => setLink(e.target.value)}
-                value={link}
-                sx={{
-                  width: "100%",
-                  backgroundColor: palette.neutral.light,
-                  borderRadius: "2rem",
-                  padding: "1rem 2rem",
-                }}
-              />
-              <CheckCircleOutlineIcon onClick={submitLink} />
-            </FlexBetween>
-          </Box>
-        )}
+        <TwiiterWidget userId={_id} twitterLink={twitterLink} />
 
-        <FlexBetween gap="1rem" mb="1rem">
-          <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter" />
-            <Box>
-              <Typography
-                color={main}
-                fontWeight="500"
-                component="a"
-                href={link}
-                target="_blank"
-                cursor="pointer"
-                style={{
-                  pointerEvents: isValid ? "auto" : "none", // Enable/disable based on the value of x
-                  color: isValid ? undefined : "gray", // Adjust color based on the disabled/enabled state
-                  textDecoration: isValid ? undefined : "none",
-                }}
-              >
-                Twitter
-              </Typography>
-              <Typography color={medium}>Social Network</Typography>
-            </Box>
-          </FlexBetween>
-          <EditOutlined
-            cursor="pointer"
-            sx={{ color: main }}
-            onClick={() => setEditTwitter(!editTwitter)}
-          />
-        </FlexBetween>
-
-        {editLinkedIn && (
-          <Box m="1rem 0" p=".5rem">
-            <FlexBetween gap="1rem">
-              <InputBase
-                placeholder="Paste your LinkedIn link.."
-                onChange={(e) => setLink(e.target.value)}
-                value={link}
-                sx={{
-                  width: "100%",
-                  backgroundColor: palette.neutral.light,
-                  borderRadius: "2rem",
-                  padding: "1rem 2rem",
-                  cursor: "pointer",
-                }}
-              />
-              <CheckCircleOutlineIcon onClick={submitLink} />
-            </FlexBetween>
-          </Box>
-        )}
-
-        <FlexBetween gap="1rem">
-          <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="linkedin" />
-            <Box>
-              <Typography color={main} fontWeight="500">
-                Linkedin
-              </Typography>
-              <Typography color={medium}>Network Platform</Typography>
-            </Box>
-          </FlexBetween>
-          <EditOutlined
-            cursor="pointer"
-            sx={{ color: main }}
-            onClick={() => setEditLinkedIn(!editLinkedIn)}
-          />
-        </FlexBetween>
+        <LinkedInWidget userId={_id} linkedInLink={linkedInLink} />
       </Box>
     </WidgetWrapper>
   );

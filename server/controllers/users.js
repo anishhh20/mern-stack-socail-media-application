@@ -54,6 +54,36 @@ export const getSuggestions = async (req, res) => {
   }
 };
 
+export const saveTwitterLink = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const { twitterLink } = req.body;
+
+    // Update the Twitter link in the MongoDB database
+    await User.findOneAndUpdate({ _id: userId }, { twitterLink: twitterLink });
+
+    res.status(200).json({ message: "Twitter link updated successfully" });
+  } catch (error) {
+    console.error("Error updating Twitter link:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const saveLinkedInLink = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const { linkedInLink } = req.body;
+
+    // Update the Twitter link in the MongoDB database
+    await User.findOneAndUpdate({ _id: userId }, { linkedInLink: linkedInLink });
+
+    res.status(200).json({ message: "LinkedIn link updated successfully" });
+  } catch (error) {
+    console.error("Error updating Twitter link:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 /* UPDATE */
 export const addRemoveFriend = async (req, res) => {
   try {

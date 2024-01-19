@@ -41,6 +41,8 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    twitterLink: String,
+    linkedInLink: String,
   },
   { timestamps: true }
 );

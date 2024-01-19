@@ -40,20 +40,26 @@ export const authSlice = createSlice({
       state.posts = updatedPosts;
     },
     setSuggestedUsers: (state, action) => {
-      // state.user.find({
-      //   _id: {
-      //     $nin: [state.user, ...state.user.friends, ...state.user.suggestedUsers], // Exclude A, friends, and already suggested
-      //   },
-      // });
       if (state.user) {
         state.user.suggestedUsers = action.payload.suggestedUsers;
       } else {
         console.error("user friends non-existent :(");
       }
-    }
+    },
+    setTwitterLink: (state, action) => {
+      state.user.twitterLink = action.payload.twitterLink;
+    },
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost, setSuggestedUsers } =
-  authSlice.actions;
+export const {
+  setMode,
+  setLogin,
+  setLogout,
+  setFriends,
+  setPosts,
+  setPost,
+  setSuggestedUsers,
+  setTwitterLink,
+} = authSlice.actions;
 export default authSlice.reducer;

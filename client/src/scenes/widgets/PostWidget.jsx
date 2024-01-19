@@ -11,6 +11,7 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
+import ShareModal from "./ShareModal";
 
 const PostWidget = ({
   postId,
@@ -89,8 +90,9 @@ const PostWidget = ({
         </FlexBetween>
 
         <IconButton>
-          <ShareOutlined />
+          <ShareModal description={description} picturePath={picturePath} />
         </IconButton>
+        
       </FlexBetween>
       {isComments && (
         <Box mt="0.5rem">

@@ -7,4 +7,11 @@ body,
   height: 100%;
   width: 100%;
   font-family: "Rubik", sans-serif;
+  scroll-behavior: smooth;
+  transition: all ease-in-out;
+}
+
+::selection {
+  background-color: hsl(0, 0%, 20%);
+  color: hsl(0, 0%, 95%);
 }

@@ -1,0 +1,24 @@
+
+
+2. In the Sponsored section there will be horizontally scrollable gallery type advertisement has to appear with left and right arrows to move from 1 slide of ad to another in left or right
+
+
+4. In the Ad section, make Create Ad button 
+
+5. Make Scollbar in adjustable color not the regular one
+
+6. In the each post there is a share icon is present make it sharable, make it like dribble.com share button when we click on it basically it opens a modal as pop up and then in that popup u have options to share through icons and copy link
+
+7. In the post section, there is comment section available make it add a comment n also see's all it
+
+***8. add smoothe transitionn to all 
+
+9. in the profile section, when i click on image of user make in visible in full screen
+
+10. Like in the UseWidget section, there is "ManageAccountsOutlined" icon. So, also add something like that which Social Profile section which basically when we click over the icon the edit icon of both the Twitter and LinkedIn are available like now we direct see edit icon next to Twitter
+
+11. Show sortable button in the Friends section which sorts all the available friends in asc or desc manner on icon click
+
+12. Edit the title of tab from "React App" to something and also image
+
+13. When email or password doesn't match while login show a particular error related to it

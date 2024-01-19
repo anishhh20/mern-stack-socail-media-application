@@ -1,12 +1,15 @@
 import { Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
+import { useState } from "react";
 
 const AdvertWidget = () => {
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
+
+  const [link, setLink] = useState("");
 
   return (
     <WidgetWrapper>
@@ -25,7 +28,19 @@ const AdvertWidget = () => {
       />
       <FlexBetween>
         <Typography color={main}>MikaCosmetics</Typography>
-        <Typography color={medium}>mikacosmetics.com</Typography>
+        <Typography
+          color={medium}
+          component="a"
+          href="https://mika-cosmetics.myshopify.com/collections/all"
+          target="_blank"
+          cursor="pointer"
+          style={{
+            pointerEvents: "auto", // Enable/disable based on the value of x
+            textDecoration: "none",
+          }}
+        >
+          mikacosmetics.com
+        </Typography>
       </FlexBetween>
       <Typography color={medium} m="0.5rem 0">
         Your pathway to stunning and immaculate beauty and made sure your skin
