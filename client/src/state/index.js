@@ -5,6 +5,7 @@ const initialState = {
   user: null,
   token: null,
   posts: [],
+  ads: [],
 };
 
 export const authSlice = createSlice({
@@ -49,6 +50,9 @@ export const authSlice = createSlice({
     setTwitterLink: (state, action) => {
       state.user.twitterLink = action.payload.twitterLink;
     },
+    setAds: (state, action) => {
+      state.ads = action.payload.ads;
+    },
   },
 });
 
@@ -61,5 +65,6 @@ export const {
   setPost,
   setSuggestedUsers,
   setTwitterLink,
+  setAds,
 } = authSlice.actions;
 export default authSlice.reducer;

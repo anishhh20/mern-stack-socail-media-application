@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { ShareOutlined } from "@mui/icons-material";
 import { Box, IconButton, InputBase, Typography } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import FlexBetween from "components/FlexBetween";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import XIcon from "@mui/icons-material/X";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { useTheme } from "@emotion/react";
 import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+} from "react-share";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const style = {
   position: "absolute",
@@ -23,7 +30,9 @@ const style = {
 };
 
 const ShareModal = ({ description, picturePath }) => {
+  const currentURL = window.location.href;
   const [open, setOpen] = React.useState(false);
+  const [isCopied, setIsCopied] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const { palette } = useTheme();
@@ -31,6 +40,7 @@ const ShareModal = ({ description, picturePath }) => {
 
   return (
     <IconButton>
+    
       <ShareOutlined onClick={handleOpen} />
 
       <Modal
@@ -74,13 +84,30 @@ const ShareModal = ({ description, picturePath }) => {
 
             <FlexBetween justifyContent="space-between" p="1.5rem" mt="3rem">
               <IconButton>
-                <FacebookIcon sx={{ fontSize: "25px" }} />
+                <FacebookShareButton
+                  url="https://github.com/nygardk/react-share"
+                  quote={description}
+                  hashtag="#React"
+                >
+                  <FacebookIcon sx={{ fontSize: "25px" }} />
+                </FacebookShareButton>
               </IconButton>
               <IconButton>
-                <InstagramIcon sx={{ fontSize: "25px" }} />
+                <LinkedinShareButton
+                  summary={description}
+                  url="https://github.com/nygardk/react-share"
+                >
+                  <LinkedInIcon sx={{ fontSize: "25px" }} />
+                </LinkedinShareButton>
               </IconButton>
               <IconButton>
-                <TwitterIcon sx={{ fontSize: "25px" }} />
+                <TwitterShareButton
+                  url="https://github.com/nygardk/react-share"
+                  title={description}
+                  hashtag="#React"
+                >
+                  <XIcon sx={{ fontSize: "22px" }} />
+                </TwitterShareButton>
               </IconButton>
             </FlexBetween>
 
@@ -88,7 +115,8 @@ const ShareModal = ({ description, picturePath }) => {
 
             <FlexBetween gap="1rem" m="1rem">
               <InputBase
-                value={"Hiiii"}
+                value={currentURL}
+                endAdornment
                 sx={{
                   width: "100%",
                   backgroundColor: palette.neutral.light,
@@ -96,7 +124,18 @@ const ShareModal = ({ description, picturePath }) => {
                   padding: "1rem 2rem",
                 }}
               />
-              <Typography>copy</Typography>
+              <CopyToClipboard
+                text={currentURL}
+                onCopy={() => setIsCopied({ isCopied: true })}
+              >
+                <Typography
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                >
+                  {!isCopied ? "copy" : "copied"}
+                </Typography>
+              </CopyToClipboard>
             </FlexBetween>
           </Box>
         </Fade>

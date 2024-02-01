@@ -30,8 +30,10 @@ const MyPostWidget = ({ picturePath, isProfile }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
+  
   const [post, setPost] = useState("");
   const { palette } = useTheme();
+  const dark = palette.neutral.dark;
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const navigate = useNavigate();
@@ -164,7 +166,7 @@ const MyPostWidget = ({ picturePath, isProfile }) => {
           disabled={!post}
           onClick={handlePost}
           sx={{
-            color: palette.background.alt,
+            color: dark,
             backgroundColor: palette.primary.main,
             borderRadius: "3rem",
           }}
