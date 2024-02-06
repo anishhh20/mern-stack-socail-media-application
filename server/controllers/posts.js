@@ -46,6 +46,28 @@ export const getUserPosts = async (req, res) => {
   }
 };
 
+export const addComment = async (req, res) => {
+  try {
+    const { postId } = req.body;
+    const { comment } = req.body;
+    const { currentUser } = req.body;
+    const {currentPicturePath} = req.body
+
+    await Post.findOneAndUpdate(
+      { _id: postId },
+      { $push: { comments: [currentUser, comment, currentPicturePath] } },
+      { new: true }
+    );
+
+    console.log(currentUser);
+
+    res.status(200).json({ message: "Comment added successfully" });
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 /* UPDATE */
 export const likePost = async (req, res) => {
   try {

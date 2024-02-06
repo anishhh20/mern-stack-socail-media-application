@@ -30,6 +30,17 @@ export const getUserFriends = async (req, res) => {
   }
 };
 
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}, '_id firstName lastName picturePath'); // Only retrieve _id, firstName, and lastName
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error getting users:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 export const getSuggestions = async (req, res) => {
   try {
     const { id, friendId } = req.params;

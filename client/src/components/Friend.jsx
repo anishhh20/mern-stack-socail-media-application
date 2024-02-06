@@ -5,14 +5,17 @@ import { useNavigate } from "react-router-dom";
 import { setFriends } from "state";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
-import "../index.css"
+import "../index.css";
+import { useEffect, useState } from "react";
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
+  const [mainUserFriends, setMainUserFriends] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
+  let isMainUserFriends = "";
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -22,8 +25,34 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const isFriend = friends.find((friend) => friend._id === friendId);
   const match = Boolean(_id === friendId);
-  
 
+  useEffect(() => {
+    const getFriends = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/users/${_id}/friends`,
+          {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const data = await response.json();
+        setMainUserFriends(data);
+
+        if (response.ok) {
+        } else {
+          console.error("Error fetching friends:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching friends:", error);
+      }
+    };
+    getFriends();
+  }, [mainUserFriends, _id, token]);
+
+  if (mainUserFriends) {
+    isMainUserFriends = mainUserFriends.some((item) => item._id === friendId);
+  }
   const patchFriend = async () => {
     const response = await fetch(
       `http://localhost:3001/users/${_id}/${friendId}`,
@@ -33,7 +62,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      },
+      }
     );
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
@@ -73,7 +102,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           onClick={() => patchFriend()}
           sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
         >
-          {isFriend ? (
+          {isFriend && isMainUserFriends ? (
             <PersonRemoveOutlined sx={{ color: primaryDark }} />
           ) : (
             <PersonAddOutlined sx={{ color: primaryDark }} />

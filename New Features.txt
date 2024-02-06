@@ -5,15 +5,7 @@
 
 5. Make Scollbar in adjustable color not the regular one
 
-7. In the post section, there is comment section available make it add a comment n also see's all it
-
 ***8. add smoothe transitionn to all 
-
-9. in the profile section, when i click on image of user make in visible in full screen
-
-10. Like in the UseWidget section, there is "ManageAccountsOutlined" icon. So, also add something like that which Social Profile section which basically when we click over the icon the edit icon of both the Twitter and LinkedIn are available like now we direct see edit icon next to Twitter
-
-11. Show sortable button in the Friends section which sorts all the available friends in asc or desc manner on icon click
 
 12. Edit the title of tab from "React App" to something and also image
 
@@ -22,3 +14,5 @@
 14. Show a loading bar at top whenever API fetch
 
 15. In anohter frnds friends section, if his frnds is not mine frnd still icon shows as removefrnd. Fix this issue.
+
+16. if in comment section, if there's not an image then flexBasis should be 100% otherwise both 50,50
