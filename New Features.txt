@@ -12,7 +12,3 @@
 13. When email or password doesn't match while login show a particular error related to it
 
 14. Show a loading bar at top whenever API fetch
-
-15. In anohter frnds friends section, if his frnds is not mine frnd still icon shows as removefrnd. Fix this issue.
-
-16. if in comment section, if there's not an image then flexBasis should be 100% otherwise both 50,50

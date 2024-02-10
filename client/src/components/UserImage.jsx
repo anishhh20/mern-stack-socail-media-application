@@ -1,6 +1,7 @@
 import Backdrop from "@mui/material/Backdrop";
 import { Box, Fade, Modal } from "@mui/material";
 import { useState } from "react";
+import Skeleton from "@mui/material/Skeleton";
 
 const style = {
   position: "absolute",
@@ -11,7 +12,7 @@ const style = {
   boxShadow: "0 0 20px 20px rgba(0,0,0,.20)",
 };
 
-const UserImage = ({ image, size = "60px", isProfile}) => {
+const UserImage = ({ image, size = "60px", isProfile, loading}) => {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const handleOpen = () => setIsImageModalOpen(true);
   const handleClose = () => setIsImageModalOpen(false);
@@ -47,6 +48,14 @@ const UserImage = ({ image, size = "60px", isProfile}) => {
         </Fade>
       </Modal>
       <Box width={size} height={size}>
+      {loading ? (
+        <Skeleton
+            animation="wave"
+            variant="circular"
+            width={size}
+            height={size}
+          />
+      ) :(
         <img
           style={{ objectFit: "cover", borderRadius: "50%" }}
           width={size}
@@ -55,6 +64,8 @@ const UserImage = ({ image, size = "60px", isProfile}) => {
           src={`http://localhost:3001/assets/${image}`}
           onClick={ isProfile ? handleOpen : undefined}
         />
+
+      )}
       </Box>
     </>
   );

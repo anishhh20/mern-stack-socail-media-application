@@ -61,7 +61,14 @@ export const addComment = async (req, res) => {
 
     console.log(currentUser);
 
-    res.status(200).json({ message: "Comment added successfully" });
+    const newComment = {
+      userId: currentUser,
+      comment: comment,
+      userPicturePath: currentPicturePath,
+      // ... any other properties of the comment
+    };
+  
+    res.status(200).json(newComment);
   } catch (error) {
     console.error("Error adding comment:", error);
     res.status(500).json({ error: "Internal server error" });

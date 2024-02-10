@@ -89,7 +89,7 @@ const UserWidget = ({ userId, picturePath }) => {
         {/* SECOND ROW */}
         <Box p="1rem 0">
           <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-            <LocationOnOutlined fontSize="large" sx={{ color: main }} />
+            <LocationOnOutlined fontSize="medium" sx={{ color: main }} />
             <Typography color={medium}>
               {location.length > 50
                 ? `${location.substring(0, 50)}...`
@@ -97,7 +97,7 @@ const UserWidget = ({ userId, picturePath }) => {
             </Typography>
           </Box>
           <Box display="flex" alignItems="center" gap="1rem">
-            <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
+            <WorkOutlineOutlined fontSize="medium" sx={{ color: main }} />
             <Typography color={medium}>
               {occupation.length > 50
                 ? `${occupation.substring(0, 50)}...`

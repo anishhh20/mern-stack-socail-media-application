@@ -1,11 +1,7 @@
 import {
   Box,
   Button,
-  Card,
-  CardMedia,
-  Divider,
   Fade,
-  FormControl,
   IconButton,
   InputBase,
   Typography,
@@ -19,15 +15,13 @@ import Backdrop from "@mui/material/Backdrop";
 import { useDispatch, useSelector } from "react-redux";
 import Dropzone from "react-dropzone";
 import { setAds } from "state";
+import Skeleton from "@mui/material/Skeleton";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import {
   EditOutlined,
   DeleteOutlined,
-  AttachFileOutlined,
-  GifBoxOutlined,
   ImageOutlined,
-  MicOutlined,
-  MoreHorizOutlined,
 } from "@mui/icons-material";
 
 const style = {
@@ -56,6 +50,7 @@ const AdvertWidget = () => {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [desc, setDesc] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -80,8 +75,6 @@ const AdvertWidget = () => {
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
-      // const ads = await response.json();
-      // ads.sort().reverse();
 
       if (response.ok) {
         setImage(null);
@@ -99,21 +92,23 @@ const AdvertWidget = () => {
     }
   };
 
-  const getAds = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/ads/getads", {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await response.json();
-      // console.log(data)
-      data.sort().reverse();
-      dispatch(setAds({ ads: data }));
-    } catch (error) {}
-  };
   useEffect(() => {
+    const getAds = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("http://localhost:3001/ads/getads", {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await response.json();
+        // console.log(data)
+        data.sort().reverse();
+        dispatch(setAds({ ads: data }));
+        setLoading(false);
+      } catch (error) {}
+    };
     getAds();
-  }, []);
+  }, [dispatch, token]);
 
   return (
     <>
@@ -264,44 +259,87 @@ const AdvertWidget = () => {
           <Typography color={dark} variant="h5" fontWeight="500">
             Sponsored
           </Typography>
-          <Typography
-            color={mediumMain}
-            sx={{ "&:hover": { cursor: "pointer", color: medium } }}
-            onClick={handleOpen}
-          >
-            Create Ad
-          </Typography>
+          {loading ? (
+            <ClipLoader size={20} color={palette.neutral.dark} />
+          ) : (
+            <Typography
+              color={mediumMain}
+              sx={{ "&:hover": { cursor: "pointer", color: medium } }}
+              onClick={handleOpen}
+            >
+              Create Ad
+            </Typography>
+          )}
         </FlexBetween>
 
         {ads.map(({ _id, title, websiteLink, description, picturePath }) => (
           <Box key={_id}>
-            <img
-              width="100%"
-              height="auto"
-              alt="advert"
-              src={`http://localhost:3001/assets/${picturePath}`}
-              style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-            />
+            {loading ? (
+              <Skeleton
+                animation="wave"
+                variant="rounded"
+                width="100%"
+                height={160}
+                sx={{ margin: ".75rem 0" }}
+              />
+            ) : (
+              <img
+                width="100%"
+                height="auto"
+                alt="advert"
+                src={`http://localhost:3001/assets/${picturePath}`}
+                style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
+              />
+            )}
             <FlexBetween flexWrap="wrap">
-              <Typography color={main}>{title}</Typography>
-              <Typography
-                color={medium}
-                component="a"
-                href={websiteLink}
-                target="_blank"
-                cursor="pointer"
-                style={{
-                  pointerEvents: "auto", // Enable/disable based on the value of x
-                  textDecoration: "none",
-                }}
-              >
-                {websiteLink}
-              </Typography>
+              {loading ? (
+                <FlexBetween width="100%" gap=".5rem">
+                  <Skeleton
+                    animation="wave"
+                    variant="rounded"
+                    width="50%"
+                    height={25}
+                  />
+                  <Skeleton
+                    animation="wave"
+                    variant="rounded"
+                    width="50%"
+                    height={15}
+                  />
+                </FlexBetween>
+              ) : (
+                <>
+                  <Typography color={main}>{title}</Typography>
+                  <Typography
+                    color={medium}
+                    component="a"
+                    href={websiteLink}
+                    target="_blank"
+                    cursor="pointer"
+                    style={{
+                      pointerEvents: "auto", // Enable/disable based on the value of x
+                      textDecoration: "none",
+                    }}
+                  >
+                    {websiteLink}
+                  </Typography>
+                </>
+              )}
             </FlexBetween>
 
-            <Typography color={medium} m="0.5rem 0">
-              {description}
-            </Typography>
+            {loading ? (
+              <Skeleton
+                animation="wave"
+                variant="rounded"
+                width="100%"
+                height={55}
+                sx={{ m: ".5rem 0" }}
+              />
+            ) : (
+              <Typography color={medium} m="0.5rem 0">
+                {description}
+              </Typography>
+            )}
           </Box>
         ))}
       </WidgetWrapper>

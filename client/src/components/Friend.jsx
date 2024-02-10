@@ -7,8 +7,9 @@ import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import "../index.css";
 import { useEffect, useState } from "react";
+import Skeleton from "@mui/material/Skeleton";
 
-const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
+const Friend = ({ friendId, name, subtitle, userPicturePath, loading }) => {
   const [mainUserFriends, setMainUserFriends] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,49 +72,68 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   return (
     <FlexBetween>
       <FlexBetween gap="1rem">
-        <UserImage image={userPicturePath} size="55px" />
+        <UserImage image={userPicturePath} size="55px" loading={loading} />
         <Box
           onClick={() => {
             navigate(`/profile/${friendId}`);
             navigate(0);
           }}
         >
-          <Typography
-            color={main}
-            variant="h5"
-            fontWeight="500"
-            sx={{
-              "&:hover": {
-                color: palette.primary.light,
-                cursor: "pointer",
-              },
-            }}
-          >
-            {name}
-          </Typography>
-          <Typography color={medium} fontSize="0.75rem">
-            {subtitle}
-          </Typography>
+          {loading ? (
+            <Skeleton variant="rounded" width={170} height={20} />
+          ) : (
+            <Typography
+              color={main}
+              variant="h5"
+              fontWeight="500"
+              sx={{
+                "&:hover": {
+                  color: palette.primary.light,
+                  cursor: "pointer",
+                },
+              }}
+            >
+              {name}
+            </Typography>
+          )}
+
+          {loading ? (
+            <Skeleton
+              variant="rounded"
+              width={140}
+              height={10}
+              sx={{ mt: ".5rem" }}
+            />
+          ) : (
+            <Typography color={medium} fontSize="0.75rem">
+              {subtitle}
+            </Typography>
+          )}
         </Box>
       </FlexBetween>
 
       {match ? undefined : (
-        <IconButton
-          onClick={() => patchFriend()}
-          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-        >
-          {isFriend && isMainUserFriends ? (
-            <PersonRemoveOutlined sx={{ color: primaryDark }} />
+        <>
+          {loading ? (
+            <Skeleton
+              animation="wave"
+              variant="circular"
+              width={45}
+              height={45}
+            />
           ) : (
-            <PersonAddOutlined sx={{ color: primaryDark }} />
+            <IconButton
+              onClick={() => patchFriend()}
+              sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+            >
+              {isFriend && isMainUserFriends ? (
+                <PersonRemoveOutlined sx={{ color: primaryDark }} />
+              ) : (
+                <PersonAddOutlined sx={{ color: primaryDark }} />
+              )}
+            </IconButton>
           )}
-
-          {/* {friendId || _id ? (
-            <PersonAddOutlined sx={{ color: primaryDark }} />
-          ) : (
-            <PersonRemoveOutlined sx={{ color: primaryDark }} />
-          )} */}
-        </IconButton>
+        </>
       )}
     </FlexBetween>
   );

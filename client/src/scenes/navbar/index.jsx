@@ -57,7 +57,7 @@ const Navbar = () => {
             },
           }}
         >
-          Sociopedia
+          MosaicMe
         </Typography>
       </FlexBetween>
 
